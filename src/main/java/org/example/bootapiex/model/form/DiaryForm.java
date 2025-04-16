@@ -1,4 +1,9 @@
 package org.example.bootapiex.model.form;
 
-public class DiaryForm {
+import org.springframework.web.multipart.MultipartFile;
+
+public record DiaryForm(MultipartFile file) {
+    public static DiaryForm empty() {
+        return new DiaryForm(null);
+    }
 }

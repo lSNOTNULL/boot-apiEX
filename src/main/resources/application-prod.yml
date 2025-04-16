@@ -4,21 +4,19 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         format_sql: true
     hibernate:
       ddl-auto: none # 배포 시는 none 또는 validate 추천
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver # mysql
+    driver-class-name: org.postgresql.Driver # mysql
     url: ${MYSQL_URL}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
-# 객체 스토리지 관련 설정
-aws:
-  s3:
-    bucketName: ${STORAGE_BUCKET_NAME}
-    region: ${STORAGE_REGION}
-    url: ${STORAGE_URL}
-    accessKey: ${STORAGE_AK}
-    secretKey: ${STORAGE_SK}
+
+# 객체 스토리지
+supabase:
+  url: ${SUPABASE_URL}
+  bucket-name: ${SUPABASE_BUCKET_NAME}
+  access-key: ${SUPABASE_ACCESS_KEY}

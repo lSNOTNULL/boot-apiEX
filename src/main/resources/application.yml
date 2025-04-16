@@ -1,1 +1,6 @@
-spring.application.name=boot-apiEX
+spring:
+  application:
+   name: boot-apiEX
+  # 프로필 설정
+  profiles:
+    active: dev # dev -> DockerFile에서 전환
