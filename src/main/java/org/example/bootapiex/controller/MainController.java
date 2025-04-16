@@ -1,6 +1,9 @@
 package org.example.bootapiex.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.example.bootapiex.model.entity.Diary;
 import org.example.bootapiex.model.form.DiaryForm;
+import org.example.bootapiex.service.DiaryService;
 import org.example.bootapiex.service.StorageService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,23 +17,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
     private final StorageService storageService;
-    public MainController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    private final DiaryService diaryService;
 
     @GetMapping
-    public String index(Model model) {
+    public String index(Model model) throws Exception {
         model.addAttribute("message", "후참잘");
         model.addAttribute("title", "프레리독");
         model.addAttribute("form", DiaryForm.empty());
+        model.addAttribute("list", diaryService.getAllDiaryList());
         return "index";
     }
     @PostMapping
     public String post(DiaryForm form, RedirectAttributes redirectAttributes) throws Exception {
         String imageName = storageService.upload(form.file());
         redirectAttributes.addFlashAttribute("image",imageName);
+        Diary diary = new Diary();
+        diary.setTitle(form.title());
+        diary.setContent(form.content());
+        diary.setFilename(imageName);
+        diaryService.createDiary(diary);
+
         return "redirect:/";
     }
     @GetMapping("/file/{filename}")
